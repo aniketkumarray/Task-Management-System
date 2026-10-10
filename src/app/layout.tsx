@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "DA Task Tracker",
-    template: "%s · DA Task Tracker",
+    default: "Task Tracker",
+    template: "%s · Task Tracker",
   },
-  description: "Daily task tracking and deadlines for the DA team",
-  applicationName: "DA Task Tracker",
+  description: "Daily task and deadline tracking for teams",
+  applicationName: "Task Tracker",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

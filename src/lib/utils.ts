@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 export const MIN_PASSWORD_LENGTH = 8;
 
 export function ticketLabel(n: number) {
-  return `DA-${String(n).padStart(4, "0")}`;
+  return `#${String(n).padStart(4, "0")}`;
 }
 
 export function initials(name: string) {

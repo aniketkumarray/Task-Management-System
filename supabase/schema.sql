@@ -1,5 +1,5 @@
 -- =============================================================================
--- DA Task Tracker — Supabase schema
+-- Task Tracker — Supabase schema
 -- Run this whole file in the Supabase SQL editor (Database → SQL Editor → New query).
 -- Safe to re-run: every statement is idempotent.
 -- =============================================================================

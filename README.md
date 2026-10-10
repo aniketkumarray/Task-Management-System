@@ -1,6 +1,6 @@
-# DA Task Tracker
+# Task Tracker
 
-Lightweight task and deadline tracking for the DA team. Built for quick daily updates: each open task
+Lightweight task and deadline tracking for any team. Built for quick daily updates: each open task
 gets a one-line "what I did today" post, a stage move, and (if needed) a deadline change with a reason.
 
 **Stack:** Next.js 16 (App Router) · Supabase (Postgres + Auth + RLS) · Tailwind v4 · Vercel
@@ -14,7 +14,7 @@ gets a one-line "what I did today" post, a stage move, and (if needed) a deadlin
 | **Ticket** `/tasks/[id]` | Everyone | Full activity timeline: daily updates, stage moves, deadline changes with reasons. Edit details, hold/complete/cancel. |
 | **Calendar** `/calendar` | Everyone | **Month** view: tasks on their due dates (agenda list on phones). **Timeline** view: Gantt-style start → due bars grouped by person, overdue tails, and a diamond marking the original deadline whenever it was moved. Filter by person. |
 | **History** `/history` | Everyone (managers see all) | Past work done, grouped by day, filter by date range and person. |
-| **Team Overview** `/team` | Manager | Per-person load, overdue, who hasn't posted today, recent activity. |
+| **Team Overview** `/team` | Manager | Per-person load, overdue, who hasn't posted today, recent activity. **Export Excel** for any month (see below). |
 | **Configuration** `/settings` | Manager | Task types with TAT (working days) and ordered stages; team members, roles, and temporary-password resets. |
 | **My Profile** `/profile` | Everyone | Change your display name and password (requires the current password). Reached by clicking your name in the sidebar. |
 
@@ -77,6 +77,23 @@ data is always live.
 
 Files involved: `src/app/manifest.ts`, `src/app/icon.png`, `src/app/apple-icon.png`, `public/icons/`, `public/sw.js`,
 `public/offline.html`. These paths are excluded from the auth proxy in `src/proxy.ts` — keep that in sync if you add more.
+
+## Monthly Excel export (for AI insights)
+
+Managers can download any month as an `.xlsx` from **Team Overview → Export Excel**. The workbook is designed to be
+handed to an LLM (ChatGPT, Claude, Gemini) as-is:
+
+| Sheet | Contents |
+| --- | --- |
+| Read me | What each sheet/column means, data-as-of date, and a **ready-to-paste prompt** asking for on-time rate, slip root causes, workload balance and recommendations. |
+| Summary | Team metrics for the month, then real tables **by task type** and **by person** (active, completed, on time, overdue, deadline moves, updates, days with an update, hours). |
+| Tasks | One row per task alive in the month: dates, TAT, slip from original deadline, days late, outcome, counts, hours. |
+| Daily updates | Every one-line note: date, time, person, ticket, note, stage move, hours. |
+| Deadline changes | Every move with old/new date, shift in days and the reason. |
+| Stages | Configured stages per task type, so stage names can be interpreted. |
+
+Route: `GET /api/export?month=YYYY-MM` (managers only; code in `src/lib/export.ts`). Nothing is sent to any AI
+service by the app itself — the manager chooses where to upload the file.
 
 ## How the daily reminder works
 

@@ -1,6 +1,6 @@
 // Minimal service worker: network-only, with an offline fallback page.
 // It deliberately never caches app pages, so users always see live data.
-const CACHE = "da-task-tracker-v1";
+const CACHE = "task-tracker-v1";
 const OFFLINE_URL = "/offline.html";
 
 self.addEventListener("install", (event) => {

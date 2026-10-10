@@ -88,7 +88,7 @@ export function AppShell({
         <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
           <ClipboardCheck size={18} />
         </span>
-        <span className="font-semibold text-gray-900">DA Task Tracker</span>
+        <span className="font-semibold text-gray-900">Task Tracker</span>
       </div>
 
       <Link href="/tasks/new" onClick={() => setOpen(false)} className="btn-primary mb-4 w-full">
@@ -146,7 +146,7 @@ export function AppShell({
           <button className="btn-ghost btn-sm -ml-1" onClick={() => setOpen((v) => !v)} aria-label="Menu">
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
-          <span className="font-semibold">DA Task Tracker</span>
+          <span className="font-semibold">Task Tracker</span>
           <Link href="/tasks/new" className="btn-primary btn-sm ml-auto" aria-label="New task">
             <Plus size={14} /> New
           </Link>

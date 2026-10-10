@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "DA Task Tracker",
+    name: "Task Tracker",
     short_name: "Tasks",
-    description: "Daily task tracking and deadlines for the DA team",
+    description: "Daily task and deadline tracking for teams",
     start_url: "/today",
     scope: "/",
     display: "standalone",

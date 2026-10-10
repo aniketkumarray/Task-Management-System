@@ -4,6 +4,7 @@ import { requireManager } from "@/lib/auth";
 import { getRecentActivity, getTeamOverview } from "@/lib/queries";
 import { formatDate, formatDateTime, todayISO } from "@/lib/dates";
 import { Avatar, DueBadge, PageHeader, TicketLink, TypeBadge } from "@/components/ui";
+import { ExportButton } from "./export-button";
 
 export default async function TeamPage() {
   await requireManager();
@@ -19,7 +20,7 @@ export default async function TeamPage() {
 
   return (
     <>
-      <PageHeader title="Team Overview" subtitle={formatDate(today)} />
+      <PageHeader title="Team Overview" subtitle={formatDate(today)} actions={<ExportButton today={today} />} />
 
       <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat label="Active tasks" value={activeTasks.length} />

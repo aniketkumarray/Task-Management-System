@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-white">
             <ClipboardCheck size={20} />
           </span>
-          <span className="text-lg font-semibold">DA Task Tracker</span>
+          <span className="text-lg font-semibold">Task Tracker</span>
         </div>
         <div className="card p-6">{children}</div>
       </div>
