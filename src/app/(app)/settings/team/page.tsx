@@ -10,7 +10,7 @@ export default async function TeamSettingsPage() {
   const canCreate = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
+    <div className="grid gap-4 2xl:grid-cols-[1fr_320px]">
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-left text-xs text-gray-500">
@@ -19,27 +19,34 @@ export default async function TeamSettingsPage() {
               <th className="px-3 py-2 font-medium">Email</th>
               <th className="px-3 py-2 font-medium">Role</th>
               <th className="px-3 py-2 font-medium">Status</th>
+              <th className="px-3 py-2 font-medium">Password</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
             {people.map((p) => (
               <tr key={p.id} className={p.is_active ? "" : "opacity-60"}>
-                <td className="px-3 py-2">
+                <td className="px-3 py-2 whitespace-nowrap">
                   <span className="inline-flex items-center gap-2">
                     <Avatar name={p.full_name} size="sm" />
                     <span className="font-medium text-gray-900">{p.full_name}</span>
                     {p.id === me.id && <span className="text-xs text-gray-400">(you)</span>}
                   </span>
                 </td>
-                <td className="px-3 py-2 text-gray-600">{p.email}</td>
-                <MemberRow id={p.id} role={p.role} isActive={p.is_active} isSelf={p.id === me.id} />
+                <td className="px-3 py-2 whitespace-nowrap text-gray-600">{p.email}</td>
+                <MemberRow
+                  id={p.id}
+                  role={p.role}
+                  isActive={p.is_active}
+                  isSelf={p.id === me.id}
+                  canResetPassword={canCreate}
+                />
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <div className="card p-4">
+      <div className="card max-w-md p-4">
         <h2 className="mb-1 text-sm font-semibold text-gray-900">Add a member</h2>
         {canCreate ? (
           <>

@@ -5,6 +5,7 @@ import { getProfiles, getTasks, getTaskTypesWithStages } from "@/lib/queries";
 import { formatDateShort, todayISO, toDateISO } from "@/lib/dates";
 import { Avatar, DueBadge, EmptyState, PageHeader, PriorityBadge, StatusBadge, TicketLink, TypeBadge } from "@/components/ui";
 import { TaskFilters } from "./task-filters";
+import { ticketLabel } from "@/lib/utils";
 import type { TaskStatus } from "@/lib/types";
 
 export default async function TasksPage(props: PageProps<"/tasks">) {
@@ -46,7 +47,37 @@ export default async function TasksPage(props: PageProps<"/tasks">) {
       {tasks.length === 0 ? (
         <EmptyState title="No tasks match these filters" />
       ) : (
-        <div className="card overflow-x-auto">
+        <>
+        <ul className="space-y-2 md:hidden">
+          {tasks.map((t) => {
+            const updatedToday = t.last_update_at && toDateISO(t.last_update_at) === today;
+            return (
+              <li key={t.id} className="card p-3">
+                <Link href={`/tasks/${t.id}`} className="block">
+                  <div className="mb-1 flex items-center gap-2 text-xs text-gray-500">
+                    <span className="font-mono">{ticketLabel(t.ticket_number)}</span>
+                    <TypeBadge name={t.task_type.name} color={t.task_type.color} />
+                    <span className="ml-auto">
+                      <StatusBadge status={t.status} />
+                    </span>
+                  </div>
+                  <p className="font-medium text-gray-900">{t.title}</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-600">
+                    <span className="inline-flex items-center gap-1">
+                      <Avatar name={t.assignee.full_name} size="sm" /> {t.assignee.full_name}
+                    </span>
+                    <span>{t.current_stage?.name ?? "—"}</span>
+                    <DueBadge dueDate={t.due_date} status={t.status} />
+                    <span className={updatedToday ? "text-green-700" : "text-gray-400"}>
+                      {t.last_update_at ? (updatedToday ? "Updated today" : `Updated ${toDateISO(t.last_update_at)}`) : "No updates"}
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="card hidden overflow-x-auto md:block">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-left text-xs text-gray-500">
               <tr>
@@ -110,6 +141,7 @@ export default async function TasksPage(props: PageProps<"/tasks">) {
             </tbody>
           </table>
         </div>
+        </>
       )}
     </>
   );

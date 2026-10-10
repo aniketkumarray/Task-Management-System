@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireManager } from "@/lib/auth";
+import { MIN_PASSWORD_LENGTH } from "@/lib/utils";
 import type { ActionResult, Role } from "@/lib/types";
 
 export async function setMemberRole(id: string, role: Role): Promise<ActionResult> {
@@ -27,6 +28,23 @@ export async function setMemberActive(id: string, isActive: boolean): Promise<Ac
   if (error) return { ok: false, error: error.message };
 
   revalidatePath("/", "layout");
+  return { ok: true };
+}
+
+export async function resetMemberPassword(id: string, newPassword: string): Promise<ActionResult> {
+  await requireManager();
+
+  const admin = createAdminClient();
+  if (!admin) {
+    return { ok: false, error: "SUPABASE_SERVICE_ROLE_KEY is not set, so passwords can't be reset from here." };
+  }
+  if (newPassword.length < MIN_PASSWORD_LENGTH) {
+    return { ok: false, error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters.` };
+  }
+
+  const { error } = await admin.auth.admin.updateUserById(id, { password: newPassword });
+  if (error) return { ok: false, error: error.message };
+
   return { ok: true };
 }
 

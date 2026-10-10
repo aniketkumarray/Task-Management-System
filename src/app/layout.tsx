@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ServiceWorker } from "@/components/service-worker";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,14 +14,34 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DA Task Tracker",
+  title: {
+    default: "DA Task Tracker",
+    template: "%s · DA Task Tracker",
+  },
   description: "Daily task tracking and deadlines for the DA team",
+  applicationName: "DA Task Tracker",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Tasks",
+  },
+  formatDetection: { telephone: false },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#2563eb",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <ServiceWorker />
+      </body>
     </html>
   );
 }

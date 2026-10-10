@@ -63,6 +63,15 @@ export async function getTasks(filters: TaskFilters = {}) {
   return (data ?? []) as TaskWithRelations[];
 }
 
+/** Tasks whose start→due span overlaps [from, to]. All statuses. */
+export async function getTasksInRange(from: string, to: string, assigneeId?: string) {
+  const supabase = await createClient();
+  let q = supabase.from("tasks").select(TASK_SELECT).lte("start_date", to).gte("due_date", from);
+  if (assigneeId) q = q.eq("assignee_id", assigneeId);
+  const { data } = await q.order("due_date", { ascending: true }).order("start_date", { ascending: true });
+  return (data ?? []) as TaskWithRelations[];
+}
+
 export async function getTaskById(id: string) {
   const supabase = await createClient();
   const { data } = await supabase.from("tasks").select(TASK_SELECT).eq("id", id).maybeSingle();

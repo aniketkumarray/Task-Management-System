@@ -12,9 +12,11 @@ gets a one-line "what I did today" post, a stage move, and (if needed) a deadlin
 | **My Day** `/today` | Everyone | Your open tasks, split into *Needs update today* / *Updated today*. Inline quick-update form on every card (note, stage, hours, deadline change with reason, mark complete). Red badge in the nav = reminder count. |
 | **All Tasks** `/tasks` | Everyone | Filterable table (person, type, status, overdue, search). |
 | **Ticket** `/tasks/[id]` | Everyone | Full activity timeline: daily updates, stage moves, deadline changes with reasons. Edit details, hold/complete/cancel. |
+| **Calendar** `/calendar` | Everyone | **Month** view: tasks on their due dates (agenda list on phones). **Timeline** view: Gantt-style start → due bars grouped by person, overdue tails, and a diamond marking the original deadline whenever it was moved. Filter by person. |
 | **History** `/history` | Everyone (managers see all) | Past work done, grouped by day, filter by date range and person. |
 | **Team Overview** `/team` | Manager | Per-person load, overdue, who hasn't posted today, recent activity. |
-| **Configuration** `/settings` | Manager | Task types with TAT (working days) and ordered stages; team members and roles. |
+| **Configuration** `/settings` | Manager | Task types with TAT (working days) and ordered stages; team members, roles, and temporary-password resets. |
+| **My Profile** `/profile` | Everyone | Change your display name and password (requires the current password). Reached by clicking your name in the sidebar. |
 
 Seeded task types: **Dashboard** (TAT 5d: Requirement Gathering → Data Preparation → Build → Review → Delivered)
 and **Report Generation** (TAT 2d: Data Extraction → Analysis → Review → Sent). Edit freely in Configuration.
@@ -47,8 +49,34 @@ employee (managers can promote people in Configuration → Team members).
 2. Add the environment variables from `.env.example` in **Project → Settings → Environment Variables**.
 3. Deploy. No other config is required.
 
-Optional: set `SUPABASE_SERVICE_ROLE_KEY` (Project Settings → API → service_role) to let managers create
-member logins directly from the app without the signup page. Keep it server-side only.
+Optional: set `SUPABASE_SERVICE_ROLE_KEY` (Project Settings → API Keys → secret key) to let managers create
+member logins and reset forgotten passwords directly from the app. Keep it server-side only.
+
+### Supabase settings to check (Authentication section)
+
+| Setting | Where | Recommended |
+| --- | --- | --- |
+| Confirm email | Sign In / Providers → Email | **Off** for an internal tool, so self-signups can log in immediately. Not needed if managers add members from the app. |
+| Secure password change | Sign In / Providers → Email | **Off** (the default). If on, the in-app password change fails with a reauthentication error. |
+| Site URL / Redirect URLs | URL Configuration | Your Vercel URL, e.g. `https://tms-xi-one.vercel.app` and `https://tms-xi-one.vercel.app/**`. Only used by email links, but set it anyway. |
+
+No database changes are needed beyond running `supabase/schema.sql` once.
+
+## Using it on a phone (PWA)
+
+The app is installable — it gets its own home-screen icon, opens full-screen without browser chrome, and has a
+bottom tab bar sized for thumbs.
+
+- **Android (Chrome):** open the site → tap **⋮** → **Add to Home screen** / **Install app**. Chrome may also show an
+  install banner on its own.
+- **iPhone (Safari):** open the site → tap the **Share** button → **Add to Home Screen**.
+
+Long-press the installed icon for shortcuts to *My Day*, *New task* and *Calendar*. If the device is offline, a
+friendly "You're offline" page is shown instead of a browser error. The service worker never caches app pages, so
+data is always live.
+
+Files involved: `src/app/manifest.ts`, `src/app/icon.png`, `src/app/apple-icon.png`, `public/icons/`, `public/sw.js`,
+`public/offline.html`. These paths are excluded from the auth proxy in `src/proxy.ts` — keep that in sync if you add more.
 
 ## How the daily reminder works
 
@@ -75,6 +103,9 @@ src/lib/supabase/            server / browser / admin clients
 src/lib/queries.ts           all reads
 src/app/actions/             all writes (server actions)
 src/components/quick-update  the one form used for every daily update
+src/components/app-shell     sidebar (desktop) + bottom tab bar (phone)
 src/app/(app)/               authenticated pages
+src/app/(app)/calendar/      month + timeline views
+src/app/manifest.ts          PWA manifest; icons in public/icons and src/app/*.png
 src/app/(auth)/              login / signup
 ```

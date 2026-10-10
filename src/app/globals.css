@@ -13,6 +13,23 @@ body {
   background: #f6f7f9;
   color: #111827;
   font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS Safari zooms into inputs smaller than 16px; keep them at 16px on phones. */
+@media (max-width: 640px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Installed PWA: no overscroll bounce/pull-to-refresh fighting the UI */
+@media (display-mode: standalone) {
+  html {
+    overscroll-behavior-y: none;
+  }
 }
 
 @layer components {
