@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: #f6f7f9;
+  color: #111827;
+  font-family: var(--font-sans);
+}
+
+@layer components {
+  .input {
+    @apply w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-xs
+      placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20
+      disabled:cursor-not-allowed disabled:bg-gray-50;
+  }
+  .label {
+    @apply mb-1 block text-xs font-medium text-gray-600;
+  }
+  .btn-base {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition
+      focus:outline-none focus:ring-2 focus:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition
+      focus:outline-none focus:ring-2 focus:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-60
+      bg-blue-600 text-white hover:bg-blue-700;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition
+      focus:outline-none focus:ring-2 focus:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-60
+      border border-gray-300 bg-white text-gray-800 hover:bg-gray-50;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition
+      focus:outline-none focus:ring-2 focus:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-60
+      text-gray-600 hover:bg-gray-100;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition
+      focus:outline-none focus:ring-2 focus:ring-red-500/30 disabled:cursor-not-allowed disabled:opacity-60
+      border border-red-200 bg-white text-red-700 hover:bg-red-50;
+  }
+  .btn-sm {
+    @apply px-2.5 py-1.5 text-xs;
+  }
+  .card {
+    @apply rounded-lg border border-gray-200 bg-white shadow-xs;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium;
+  }
+}
