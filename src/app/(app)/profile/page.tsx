@@ -2,6 +2,7 @@ import { requireProfile } from "@/lib/auth";
 import { formatDate } from "@/lib/dates";
 import { Avatar, PageHeader } from "@/components/ui";
 import { NameForm, PasswordForm } from "./profile-forms";
+import { ThemeSelect } from "@/components/theme";
 
 export default async function ProfilePage() {
   const profile = await requireProfile();
@@ -22,6 +23,14 @@ export default async function ProfilePage() {
             </div>
           </div>
           <NameForm fullName={profile.full_name} />
+        </div>
+
+        <div className="card p-5">
+          <h2 className="mb-1 text-sm font-semibold text-gray-900">Appearance</h2>
+          <p className="mb-3 text-xs text-gray-500">
+            Saved on this device. &ldquo;System&rdquo; follows your phone or computer setting.
+          </p>
+          <ThemeSelect />
         </div>
 
         <div className="card p-5">

@@ -78,6 +78,16 @@ data is always live.
 Files involved: `src/app/manifest.ts`, `src/app/icon.png`, `src/app/apple-icon.png`, `public/icons/`, `public/sw.js`,
 `public/offline.html`. These paths are excluded from the auth proxy in `src/proxy.ts` — keep that in sync if you add more.
 
+## Dark mode
+
+Everyone can switch between light and dark with the sun/moon button (sidebar footer on desktop, top bar on phones,
+top-right on the login page). **My Profile → Appearance** also offers **System**, which follows the device setting;
+that is the default until someone picks a mode. The choice is saved per device.
+
+How it works: `<html class="dark">` is set by a tiny inline script before first paint (no white flash), and
+`src/app/globals.css` re-maps the gray and accent colour scales under `.dark`, so components don't need `dark:`
+classes. Use `bg-surface` (not `bg-white`) for cards, inputs and panels so they flip correctly.
+
 ## Monthly Excel export (for AI insights)
 
 Managers can download any month as an `.xlsx` from **Team Overview → Export Excel**. The workbook is designed to be

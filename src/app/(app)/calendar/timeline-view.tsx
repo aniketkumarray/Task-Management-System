@@ -114,7 +114,7 @@ export function TimelineView({ days, tasks, today }: { days: string[]; tasks: Ta
                 <div key={t.id} className="flex border-b border-gray-100">
                   <Link
                     href={`/tasks/${t.id}`}
-                    className="sticky left-0 z-20 w-40 shrink-0 truncate bg-white px-3 py-1.5 hover:bg-gray-50 sm:w-56"
+                    className="sticky left-0 z-20 w-40 shrink-0 truncate bg-surface px-3 py-1.5 hover:bg-gray-50 sm:w-56"
                     title={t.title}
                   >
                     <span className="font-mono text-gray-400">{ticketLabel(t.ticket_number)}</span>{" "}
@@ -129,7 +129,7 @@ export function TimelineView({ days, tasks, today }: { days: string[]; tasks: Ta
                       style={{
                         gridColumn: `${s + 1} / ${e + 2}`,
                         gridRow: 1,
-                        backgroundColor: t.status === "cancelled" ? "#d1d5db" : t.task_type.color,
+                        backgroundColor: t.status === "cancelled" ? "var(--color-gray-300)" : t.task_type.color,
                         opacity: t.status === "completed" ? 0.55 : 1,
                       }}
                       className="z-10 my-1.5 truncate rounded px-1.5 text-[10px] font-medium leading-5 text-white"
@@ -141,7 +141,7 @@ export function TimelineView({ days, tasks, today }: { days: string[]; tasks: Ta
                     {overdue && tailEnd > e && (
                       <div
                         style={{ gridColumn: `${e + 2} / ${tailEnd + 2}`, gridRow: 1 }}
-                        className="z-10 my-2.5 rounded-r bg-[repeating-linear-gradient(45deg,#fca5a5_0,#fca5a5_4px,#fee2e2_4px,#fee2e2_8px)]"
+                        className="z-10 my-2.5 rounded-r bg-[repeating-linear-gradient(45deg,#fca5a5_0,#fca5a5_4px,#fee2e2_4px,#fee2e2_8px)] dark:bg-[repeating-linear-gradient(45deg,#b91c1c_0,#b91c1c_4px,#3f1d22_4px,#3f1d22_8px)]"
                         title="Overdue"
                       />
                     )}
@@ -167,7 +167,7 @@ export function TimelineView({ days, tasks, today }: { days: string[]; tasks: Ta
             <span className="h-2.5 w-6 rounded bg-blue-600" /> planned (start → due)
           </span>
           <span className="inline-flex items-center gap-1">
-            <span className="h-2.5 w-6 rounded bg-[repeating-linear-gradient(45deg,#fca5a5_0,#fca5a5_4px,#fee2e2_4px,#fee2e2_8px)]" /> overdue
+            <span className="h-2.5 w-6 rounded bg-[repeating-linear-gradient(45deg,#fca5a5_0,#fca5a5_4px,#fee2e2_4px,#fee2e2_8px)] dark:bg-[repeating-linear-gradient(45deg,#b91c1c_0,#b91c1c_4px,#3f1d22_4px,#3f1d22_8px)]" /> overdue
           </span>
           <span className="inline-flex items-center gap-1">
             <span className="block h-2 w-2 rotate-45 bg-amber-500" /> original deadline (moved)

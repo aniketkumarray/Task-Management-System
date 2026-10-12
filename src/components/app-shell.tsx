@@ -20,6 +20,7 @@ import { signOut } from "@/app/actions/auth";
 import { cn } from "@/lib/utils";
 import type { Profile } from "@/lib/types";
 import { Avatar } from "@/components/ui";
+import { ThemeToggle } from "@/components/theme";
 
 interface NavItem {
   href: string;
@@ -116,6 +117,7 @@ export function AppShell({
               </p>
             </div>
           </Link>
+          <ThemeToggle />
           <form action={signOut}>
             <button type="submit" className="btn-ghost btn-sm" title="Sign out">
               <LogOut size={15} />
@@ -130,31 +132,32 @@ export function AppShell({
 
   return (
     <div className="flex min-h-screen flex-1">
-      <aside className="hidden w-60 shrink-0 border-r border-gray-200 bg-white p-3 lg:block">{sidebarInner}</aside>
+      <aside className="hidden w-60 shrink-0 border-r border-gray-200 bg-surface p-3 lg:block">{sidebarInner}</aside>
 
       {open && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div className="absolute inset-0 bg-black/30" onClick={() => setOpen(false)} />
-          <aside className="absolute inset-y-0 left-0 w-64 bg-white p-3 pt-[max(0.75rem,env(safe-area-inset-top))] shadow-xl">
+          <aside className="absolute inset-y-0 left-0 w-64 bg-surface p-3 pt-[max(0.75rem,env(safe-area-inset-top))] shadow-xl">
             {sidebarInner}
           </aside>
         </div>
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-12 items-center gap-2 border-b border-gray-200 bg-white px-3 pt-[env(safe-area-inset-top)] lg:hidden">
+        <header className="sticky top-0 z-30 flex h-12 items-center gap-2 border-b border-gray-200 bg-surface px-3 pt-[env(safe-area-inset-top)] lg:hidden">
           <button className="btn-ghost btn-sm -ml-1" onClick={() => setOpen((v) => !v)} aria-label="Menu">
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
           <span className="font-semibold">Task Tracker</span>
-          <Link href="/tasks/new" className="btn-primary btn-sm ml-auto" aria-label="New task">
+          <ThemeToggle className="ml-auto" />
+          <Link href="/tasks/new" className="btn-primary btn-sm" aria-label="New task">
             <Plus size={14} /> New
           </Link>
         </header>
 
         <main className="mx-auto w-full max-w-6xl flex-1 p-4 pb-24 sm:p-6 lg:pb-6">{children}</main>
 
-        <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-gray-200 bg-white pb-[env(safe-area-inset-bottom)] lg:hidden">
+        <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-gray-200 bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden">
           <ul className="flex">
             {barItems.map((item) => {
               const active = isActive(item.href);

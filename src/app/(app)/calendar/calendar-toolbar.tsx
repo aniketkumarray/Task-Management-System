@@ -62,7 +62,7 @@ export function CalendarToolbar({
           ))}
         </select>
 
-        <div className="inline-flex rounded-md border border-gray-300 bg-white p-0.5">
+        <div className="inline-flex rounded-md border border-gray-300 bg-surface p-0.5">
           {(["month", "timeline"] as const).map((v) => (
             <button
               key={v}

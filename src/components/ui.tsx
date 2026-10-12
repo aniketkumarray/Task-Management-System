@@ -25,7 +25,7 @@ export function Avatar({ name, size = "md" }: { name: string; size?: "sm" | "md"
 
 export function TypeBadge({ name, color }: { name: string; color: string }) {
   return (
-    <span className="badge border" style={{ borderColor: color, color, backgroundColor: `${color}14` }}>
+    <span className="badge type-badge border" style={{ "--c": color } as React.CSSProperties}>
       {name}
     </span>
   );
@@ -122,7 +122,7 @@ export function StageProgress({
                 "rounded-full border px-2 py-0.5 text-xs",
                 active && "font-semibold text-white",
                 done && "border-transparent bg-gray-200 text-gray-600",
-                !active && !done && "border-gray-200 bg-white text-gray-400",
+                !active && !done && "border-gray-200 bg-surface text-gray-400",
               )}
               style={active ? { backgroundColor: color, borderColor: color } : undefined}
             >

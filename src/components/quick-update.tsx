@@ -133,7 +133,7 @@ export function QuickUpdate({ taskId, currentStageId, dueDate, stages, variant =
         <label
           className={cn(
             "inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs font-medium",
-            complete ? "border-green-400 bg-green-50 text-green-800" : "border-gray-300 bg-white text-gray-700",
+            complete ? "border-green-400 bg-green-50 text-green-800" : "border-gray-300 bg-surface text-gray-700",
           )}
         >
           <input type="checkbox" checked={complete} onChange={(e) => setComplete(e.target.checked)} className="sr-only" />

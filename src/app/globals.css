@@ -1,17 +1,100 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: <html class="dark"> (set before first paint by the script in layout.tsx). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
+/* Card / input / panel background. Use bg-surface instead of bg-white so it flips in dark mode. */
+@theme {
+  --color-surface: #ffffff;
+}
+
 :root {
   color-scheme: light;
+  --app-bg: #f6f7f9;
+}
+
+/*
+ * Dark mode works by re-pointing the palette the UI is built from, so components need no dark: classes:
+ * - gray is inverted (text-gray-900 becomes near-white, bg-gray-50 becomes a dark panel, borders darken),
+ * - accent tints (-50..-300) become translucent dark tints and accent text (-700..-900) becomes light,
+ * - accent -500/-600 are lifted one step so links and buttons keep contrast on dark backgrounds.
+ */
+.dark {
+  color-scheme: dark;
+  --app-bg: #0d1117;
+  --color-surface: #151a23;
+
+  --color-gray-50: #1b212c;
+  --color-gray-100: #232a36;
+  --color-gray-200: #2b3341;
+  --color-gray-300: #3a4353;
+  --color-gray-400: #6b7585;
+  --color-gray-500: #8e97a5;
+  --color-gray-600: #a7afbb;
+  --color-gray-700: #c6ccd5;
+  --color-gray-800: #dce1e7;
+  --color-gray-900: #eef1f5;
+  --color-gray-950: #f8fafc;
+
+  --color-blue-50: rgb(59 130 246 / 0.12);
+  --color-blue-100: rgb(59 130 246 / 0.18);
+  --color-blue-200: rgb(59 130 246 / 0.3);
+  --color-blue-300: rgb(59 130 246 / 0.45);
+  --color-blue-500: #60a5fa;
+  --color-blue-600: #3b82f6;
+  --color-blue-700: #93c5fd;
+  --color-blue-800: #bfdbfe;
+  --color-blue-900: #dbeafe;
+
+  --color-amber-50: rgb(245 158 11 / 0.1);
+  --color-amber-100: rgb(245 158 11 / 0.16);
+  --color-amber-200: rgb(245 158 11 / 0.28);
+  --color-amber-300: rgb(245 158 11 / 0.42);
+  --color-amber-500: #fbbf24;
+  --color-amber-600: #f59e0b;
+  --color-amber-700: #fcd34d;
+  --color-amber-800: #fde68a;
+  --color-amber-900: #fef3c7;
+
+  --color-green-50: rgb(34 197 94 / 0.1);
+  --color-green-100: rgb(34 197 94 / 0.16);
+  --color-green-200: rgb(34 197 94 / 0.28);
+  --color-green-300: rgb(34 197 94 / 0.42);
+  --color-green-500: #4ade80;
+  --color-green-600: #22c55e;
+  --color-green-700: #86efac;
+  --color-green-800: #bbf7d0;
+  --color-green-900: #dcfce7;
+
+  --color-red-50: rgb(239 68 68 / 0.1);
+  --color-red-100: rgb(239 68 68 / 0.16);
+  --color-red-200: rgb(239 68 68 / 0.3);
+  --color-red-300: rgb(239 68 68 / 0.45);
+  --color-red-500: #f87171;
+  --color-red-600: #ef4444;
+  --color-red-700: #fca5a5;
+  --color-red-800: #fecaca;
+  --color-red-900: #fee2e2;
+
+  --color-sky-50: rgb(14 165 233 / 0.1);
+  --color-sky-100: rgb(14 165 233 / 0.16);
+  --color-sky-700: #7dd3fc;
+  --color-sky-800: #bae6fd;
+
+  --color-purple-50: rgb(168 85 247 / 0.1);
+  --color-purple-100: rgb(168 85 247 / 0.16);
+  --color-purple-700: #d8b4fe;
+  --color-purple-800: #e9d5ff;
 }
 
 body {
-  background: #f6f7f9;
-  color: #111827;
+  background: var(--app-bg);
+  color: var(--color-gray-900);
   font-family: var(--font-sans);
   -webkit-tap-highlight-color: transparent;
 }
@@ -34,7 +117,7 @@ body {
 
 @layer components {
   .input {
-    @apply w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-xs
+    @apply w-full rounded-md border border-gray-300 bg-surface px-3 py-2 text-sm text-gray-900 shadow-xs
       placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20
       disabled:cursor-not-allowed disabled:bg-gray-50;
   }
@@ -48,12 +131,12 @@ body {
   .btn-primary {
     @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition
       focus:outline-none focus:ring-2 focus:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-60
-      bg-blue-600 text-white hover:bg-blue-700;
+      bg-blue-600 text-white hover:bg-blue-700 dark:hover:bg-blue-500;
   }
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition
       focus:outline-none focus:ring-2 focus:ring-blue-500/30 disabled:cursor-not-allowed disabled:opacity-60
-      border border-gray-300 bg-white text-gray-800 hover:bg-gray-50;
+      border border-gray-300 bg-surface text-gray-800 hover:bg-gray-50;
   }
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition
@@ -63,15 +146,26 @@ body {
   .btn-danger {
     @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition
       focus:outline-none focus:ring-2 focus:ring-red-500/30 disabled:cursor-not-allowed disabled:opacity-60
-      border border-red-200 bg-white text-red-700 hover:bg-red-50;
+      border border-red-200 bg-surface text-red-700 hover:bg-red-50;
   }
   .btn-sm {
     @apply px-2.5 py-1.5 text-xs;
   }
   .card {
-    @apply rounded-lg border border-gray-200 bg-white shadow-xs;
+    @apply rounded-lg border border-gray-200 bg-surface shadow-xs;
   }
   .badge {
     @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium;
+  }
+  /* Task-type badge: colour comes from configuration via --c; lightened in dark mode for contrast. */
+  .type-badge {
+    border-color: var(--c);
+    color: var(--c);
+    background-color: color-mix(in srgb, var(--c) 8%, transparent);
+  }
+  .dark .type-badge {
+    border-color: color-mix(in srgb, var(--c) 70%, white);
+    color: color-mix(in srgb, var(--c) 55%, white);
+    background-color: color-mix(in srgb, var(--c) 18%, transparent);
   }
 }

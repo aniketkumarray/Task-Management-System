@@ -31,7 +31,7 @@ export function ExportButton({ today }: { today: string }) {
       </div>
 
       {open && (
-        <div className="absolute right-0 z-20 mt-2 w-80 rounded-lg border border-gray-200 bg-white p-3 text-xs text-gray-700 shadow-lg">
+        <div className="absolute right-0 z-20 mt-2 w-80 rounded-lg border border-gray-200 bg-surface p-3 text-xs text-gray-700 shadow-lg">
           <p className="mb-1.5 font-semibold text-gray-900">Get AI insights from this export</p>
           <ol className="list-decimal space-y-1 pl-4">
             <li>Download the month&apos;s Excel file.</li>
